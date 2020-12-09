@@ -5,7 +5,7 @@
 (def in (->> "resources/day-9.txt"
             slurp
             s/split-lines
-            (map #(Integer/parseInt %))))
+            (map #(Long/parseLong %))))
 
 
 (defn solution [preamble the-rest]
