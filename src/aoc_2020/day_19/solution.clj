@@ -28,3 +28,20 @@
   (let [regexp (build-regexp rules '("8" "11"))
         matches (map #(.matches % regexp) strs)]
     (count (filter #(= true %) matches))))
+
+(defn m [p1 p2 max-depth s]
+  "matches strings that start with at least max-depth occurences of p1,"
+  "and follow with max-depth occurences of p2"
+  (if (<= max-depth 0)
+    false
+    (let [r (str p1 "{" (inc max-depth) ",}" (.substring p2 1) "{" max-depth "}")
+          t (.matches s r)]
+      (if t t (recur p1 p2 (dec max-depth) s)))))
+
+(defn solution-second-part []
+  (let [fourty-two (build-regexp rules '("42"))
+        thirty-one (build-regexp rules '("31"))
+        max-depth 4
+        regexp (str (.substring fourty-two 1) "+" (.substring thirty-one 1) "+")
+        matches (map #(m fourty-two thirty-one max-depth %) strs)]
+    (count (filter #(= true %) matches))))
