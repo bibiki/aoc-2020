@@ -11,7 +11,7 @@
        (every? #(Character/isDigit %) a)
        (every? #(Character/isDigit %) c)))
 
-(defn is-number-paren? [a b c]
+(defn is-group? [a b c]
   (and (= a "(") (= c ")") (every? #(Character/isDigit %) b)))
 
 (defn get-func [f]
@@ -24,7 +24,7 @@
       (cond (can-operate? a b c)
             (let [r ((get-func b) (read-string a) (read-string c))]
               (recur (concat (take i input) (list (str r)) (drop (+ i 3) input)) 0))
-            (is-number-paren? a b c)
+            (is-group? a b c)
               (recur (concat (take i input) (list b) (drop (+ 3 i) input)) 0)
             :else (recur input (inc i))))))
 
